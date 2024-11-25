@@ -10,9 +10,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: "E-voting app",
-      home: const HomePage(), // Use a separate HomePage widget
+      home: HomePage(), // Use a separate HomePage widget
     );
   }
 }
@@ -144,7 +144,7 @@ class HomePage extends StatelessWidget {
                               BorderRadius.circular(10), // Rounded corners
                         ),
                       ),
-                      child:  Text('Tamil'),
+                      child:  const Text('Tamil'),
                     ),
                   ),
 
@@ -184,7 +184,7 @@ class HomePage extends StatelessWidget {
                               BorderRadius.circular(10), // Rounded corners
                         ),
                       ),
-                      child:  Text('English'),
+                      child:  const Text('English'),
                     ),
                   ),
                 ],
