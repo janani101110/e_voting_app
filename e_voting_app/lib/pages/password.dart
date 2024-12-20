@@ -14,47 +14,45 @@ class Password extends StatefulWidget {
 
 class _PasswordState extends State<Password> {
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  String? savedPassword;
 
   @override
   void dispose() {
-    _passwordController.dispose(); // Clean up the controller when the widget is disposed.
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
   Future<void> _updatePassword() async {
-  if (_formKey.currentState?.validate() != true) return;
+    if (_formKey.currentState?.validate() != true) return;
 
-  final url = Uri.parse('http://10.0.2.2:8080/user/${widget.userId}');
-  final response = await http.post(
-    url,
-    headers: {'Content-Type': 'application/json'},
-    body: json.encode({'password': _passwordController.text}),
-  );
+    final url = Uri.parse('http://10.0.2.2:8080/user/${widget.userId}');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'password': _passwordController.text}),
+    );
 
-  if (response.statusCode == 200) {
-    
-    // Navigate to PassAccept page
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Passaccept(userId: widget.userId),
-      ),
-    );
-  } else if (response.statusCode == 404) {
-    // User not found
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('User not found. Password not updated.')),
-    );
-  } else {
-    // Other errors
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('An error occurred. Please try again.')),
-    );
+    if (response.statusCode == 200) {
+      // Navigate to PassAccept page
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Passaccept(userId: widget.userId),
+        ),
+      );
+    } else if (response.statusCode == 404) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User not found. Password not updated.')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An error occurred. Please try again.')),
+      );
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +74,7 @@ class _PasswordState extends State<Password> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 120),
+              const SizedBox(height: 30),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -93,16 +91,56 @@ class _PasswordState extends State<Password> {
                 child: TextFormField(
                   controller: _passwordController,
                   decoration: const InputDecoration(
+                    hintText: 'Enter Password',
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
                     ),
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   ),
-                  obscureText: true, // Hides the password input
+                  obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter password';
+                    }
+                    if (value.length < 6) {
+                      return 'Password must be at least 6 characters long';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: TextFormField(
+                  controller: _confirmPasswordController,
+                  decoration: const InputDecoration(
+                    hintText: 'Confirm Password',
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please confirm password';
+                    }
+                    if (value != _passwordController.text) {
+                      return 'Passwords do not match';
                     }
                     return null;
                   },

@@ -1,5 +1,4 @@
 
-import 'package:e_voting_app/pages/login.dart';
 import 'package:e_voting_app/pages/register_form.dart';
 import 'package:flutter/material.dart';
 
