@@ -1,4 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
 import 'dart:io';
 import 'dart:convert'; // Add this for JSON decoding
 import 'package:e_voting_app/pages/regpass.dart';
@@ -21,37 +20,44 @@ class _RegisterFormState extends State<RegisterForm> {
   TextEditingController fullnameController = TextEditingController();
 
   Future<void> checkUserNic() async {
-  final nic = nicController.text;
-  final url = Uri.parse('http://10.0.2.2:8080/usernic?nic=$nic');
-
-  try {
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final userData = jsonDecode(response.body);
-      final userId = userData['id']; // Extract the user ID
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Regpass(userId: userId),
-        ),
-      );
-    } else if (response.statusCode == 404) {
+    final nic = nicController.text;
+    if (nic.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Not a Valid Voter")),
+        const SnackBar(content: Text("Please enter a valid NIC number")),
       );
-    } else {
+      return;
+    }
+
+    final url = Uri.parse('http://10.0.2.2:8080/api/usernic?nic=$nic');
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final userData = jsonDecode(response.body);
+        final userId = userData['id']; // Extract the user ID
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Regpass(userId: userId),
+          ),
+        );
+      } else if (response.statusCode == 404) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Not a Valid Voter")),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Unexpected error: ${response.statusCode}")),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Unexpected error: ${response.statusCode}")),
+        SnackBar(content: Text("Error: ${e.toString()}")),
       );
     }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Error: ${e.toString()}")),
-    );
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +108,6 @@ class _RegisterFormState extends State<RegisterForm> {
                     ),
                   ),
                   const SizedBox(height: 20),
-
                   const Text('Photo of NIC'),
                   Row(
                     children: [
@@ -123,7 +128,8 @@ class _RegisterFormState extends State<RegisterForm> {
                       ),
                     ],
                   ),
-                  if (_selectedImageFront != null || _selectedImageBack != null) ...[
+                  if (_selectedImageFront != null ||
+                      _selectedImageBack != null) ...[
                     const SizedBox(height: 20),
                     Row(
                       children: [
@@ -144,7 +150,6 @@ class _RegisterFormState extends State<RegisterForm> {
                     ),
                   ],
                   const SizedBox(height: 20),
-
                   const Text('Full Name'),
                   Container(
                     decoration: BoxDecoration(
@@ -177,7 +182,6 @@ class _RegisterFormState extends State<RegisterForm> {
                     ),
                   ),
                   const SizedBox(height: 20),
-
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(
