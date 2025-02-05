@@ -4,8 +4,8 @@ import 'package:lottie/lottie.dart';
 
 class Regpass extends StatefulWidget {
   final int userId;
-
-  const Regpass({super.key, required this.userId});
+final String nic;
+  const Regpass({super.key, required this.userId, required this.nic});
 
   @override
   _RegpassState createState() => _RegpassState();
@@ -20,7 +20,8 @@ class _RegpassState extends State<Regpass> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => Password(userId: widget.userId), // Pass userId here
+          builder: (context) =>
+              Password(userId: widget.userId, nic: widget.nic),
         ),
       );
     });

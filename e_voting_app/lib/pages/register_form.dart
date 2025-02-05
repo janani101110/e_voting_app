@@ -1,11 +1,12 @@
-import 'dart:io';
-import 'dart:convert'; // Add this for JSON decoding
+import 'dart:convert';
 import 'package:e_voting_app/pages/regpass.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterForm extends StatefulWidget {
-  const RegisterForm({super.key});
+  final String nic;
+
+  const RegisterForm({super.key, required this.nic});
 
   @override
   _RegisterFormState createState() => _RegisterFormState();
@@ -13,11 +14,17 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
-  File? _selectedImageFront;
-  File? _selectedImageBack;
-
   TextEditingController nicController = TextEditingController();
   TextEditingController fullnameController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // If NIC was passed, pre-populate the controller
+    if (widget.nic.isNotEmpty) {
+      nicController.text = widget.nic;
+    }
+  }
 
   Future<void> checkUserNic() async {
     final nic = nicController.text;
@@ -40,7 +47,7 @@ class _RegisterFormState extends State<RegisterForm> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Regpass(userId: userId),
+            builder: (context) => Regpass(userId: userId, nic: nic),
           ),
         );
       } else if (response.statusCode == 404) {
@@ -107,48 +114,6 @@ class _RegisterFormState extends State<RegisterForm> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  const Text('Photo of NIC'),
-                  Row(
-                    children: [
-                      MaterialButton(
-                        color: const Color.fromRGBO(245, 224, 248, 1),
-                        child: const Text("Front"),
-                        onPressed: () {
-                          // Add image picker functionality here if needed
-                        },
-                      ),
-                      const SizedBox(width: 20),
-                      MaterialButton(
-                        color: const Color.fromRGBO(245, 224, 248, 1),
-                        child: const Text("Back"),
-                        onPressed: () {
-                          // Add image picker functionality here if needed
-                        },
-                      ),
-                    ],
-                  ),
-                  if (_selectedImageFront != null ||
-                      _selectedImageBack != null) ...[
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        if (_selectedImageFront != null)
-                          Image.file(
-                            _selectedImageFront!,
-                            width: 100,
-                            height: 100,
-                          ),
-                        const SizedBox(width: 20),
-                        if (_selectedImageBack != null)
-                          Image.file(
-                            _selectedImageBack!,
-                            width: 100,
-                            height: 100,
-                          ),
-                      ],
-                    ),
-                  ],
                   const SizedBox(height: 20),
                   const Text('Full Name'),
                   Container(

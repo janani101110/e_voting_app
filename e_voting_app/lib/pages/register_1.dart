@@ -1,21 +1,22 @@
-
+import 'package:e_voting_app/pages/login.dart';
 import 'package:e_voting_app/pages/register_form.dart';
 import 'package:flutter/material.dart';
 
 class Register1 extends StatelessWidget {
+  
   const Register1({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Register"), // Added title for better context
+        title: const Text("Register"),
       ),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/bg.png'), // Background image
-            fit: BoxFit.cover, // Ensures the image fills the whole screen
+            image: AssetImage('assets/bg.png'),
+            fit: BoxFit.cover,
           ),
         ),
         child: Column(
@@ -24,8 +25,7 @@ class Register1 extends StatelessWidget {
             Align(
               alignment: const Alignment(0.2, -0.2),
               child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.center, // Centered horizontally
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Transform.translate(
                     offset: const Offset(10, -100),
@@ -35,14 +35,12 @@ class Register1 extends StatelessWidget {
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage('assets/p1.png'),
-                          fit: BoxFit
-                              .contain, // Ensures the logo fits nicely in the container
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
                   ),
-                  // Added a comma here to fix the syntax
-                  const SizedBox(width: 20), // Space between logo and button
+                  const SizedBox(width: 20),
                 ],
               ),
             ),
@@ -57,48 +55,40 @@ class Register1 extends StatelessWidget {
                         colors: [
                           Color.fromRGBO(111, 44, 145, 1),
                           Color.fromRGBO(199, 1, 127, 1),
-                        ], // Gradient colors
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
-                      borderRadius:
-                          BorderRadius.circular(10), // Rounded corners
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: SizedBox(
                       width: 200,
-
-                    
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const RegisterForm()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.transparent, // Text color
-                        padding: const EdgeInsets.symmetric(
-                          
-                          vertical: 15,
-                        ), // Padding
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(10), // Rounded corners
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Navigate to RegisterForm without any data
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterForm(nic: ""),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
+                        child: const Text('Register'),
                       ),
-                      child: const Text('Register'), // Added button text
-                    ),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            //login button
+            const SizedBox(height: 20),
             Align(
               alignment: const Alignment(0.2, -0.2),
               child: Row(
@@ -110,36 +100,32 @@ class Register1 extends StatelessWidget {
                         colors: [
                           Color.fromRGBO(111, 44, 145, 1),
                           Color.fromRGBO(199, 1, 127, 1),
-                        ], // Gradient colors
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
-                      borderRadius:
-                          BorderRadius.circular(10), // Rounded corners
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: SizedBox(
-                      width: 200, // Set a fixed width
+                      width: 200,
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const RegisterForm()),
+                              builder: (context) =>  Login(),
+                            ),
                           );
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: Colors
-                              .transparent, // Transparent to keep gradient
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 15,
-                          ), // Padding adjusted
+                          backgroundColor: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(10), // Rounded corners
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: const Text('Log In'), // Button text
+                        child: const Text('Log In'),
                       ),
                     ),
                   ),

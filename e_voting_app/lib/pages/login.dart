@@ -1,12 +1,10 @@
+import 'package:e_voting_app/pages/fistpage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:e_voting_app/pages/passaccept.dart'; // Navigate after login
 
 class Login extends StatefulWidget {
-  final int userId;
-
-  const Login({super.key, required this.userId});
+  const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();
@@ -18,14 +16,14 @@ class _LoginState extends State<Login> {
 
   @override
   void dispose() {
-    _passwordController.dispose(); // Clean up the controller when the widget is disposed.
+    _passwordController.dispose();
     super.dispose();
   }
 
   Future<void> _login() async {
     if (_formKey.currentState?.validate() != true) return;
 
-    final url = Uri.parse('http://10.0.2.2:8080/user/${widget.userId}/login');
+    final url = Uri.parse('');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -37,11 +35,10 @@ class _LoginState extends State<Login> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login successful!')),
       );
-      // Navigate to the next page after successful login
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Passaccept(userId: widget.userId),
+          builder: (context) => const Fistpage(),
         ),
       );
     } else if (response.statusCode == 401) {
@@ -65,7 +62,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('User ID: ${widget.userId}')),
+      appBar: AppBar(title: const Text('Login')),
       body: Padding(
         padding: const EdgeInsets.all(25.0),
         child: Form(
@@ -74,7 +71,7 @@ class _LoginState extends State<Login> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 80),
-              Text(
+              const Text(
                 'Login',
                 style: TextStyle(
                   color: Color.fromRGBO(111, 44, 145, 1),
@@ -105,7 +102,7 @@ class _LoginState extends State<Login> {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   ),
-                  obscureText: true, // Hides the password input
+                  obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter password';
@@ -130,7 +127,7 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ElevatedButton(
-                    onPressed: _login, // Call _login instead of _updatePassword
+                    onPressed: _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,

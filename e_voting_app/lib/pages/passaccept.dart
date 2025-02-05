@@ -5,27 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class Passaccept extends StatefulWidget {
-  final int userId;
-
-  const Passaccept({super.key, required this.userId});
+  final String nic;
+  const Passaccept({super.key, required this.nic});
 
   @override
   _PassacceptState createState() => _PassacceptState();
 }
 
-
-
 class _PassacceptState extends State<Passaccept> {
   @override
   void initState() {
     super.initState();
-    // Navigate to the password page after a 3-second delay
+    // Navigate to Login after animation
     Future.delayed(const Duration(seconds: 6), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (context) => Login(userId: widget.userId), // Pass userId here
-        ),
+        MaterialPageRoute(builder: (context) => Login()),
       );
     });
   }
@@ -33,7 +28,7 @@ class _PassacceptState extends State<Passaccept> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('User ID: ${widget.userId}')),
+      appBar: AppBar(title: const Text('Password Accepted')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
