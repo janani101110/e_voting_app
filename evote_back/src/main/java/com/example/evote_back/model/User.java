@@ -1,3 +1,4 @@
+
 package com.example.evote_back.model;
 
 import jakarta.persistence.Column;
