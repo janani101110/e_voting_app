@@ -1,5 +1,6 @@
 package com.example.evote_back.controller;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.evote_back.Repository.UserRepository;
+import com.example.evote_back.model.LoginRequest;
 import com.example.evote_back.model.PasswordRequest;
 import com.example.evote_back.model.User;
+
+
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -63,5 +67,25 @@ public class UserController {
             return ResponseEntity.status(404).body("User with the given NIC not found");
         }
     }
+
+    @PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    Optional<User> userOptional = userRepository.findByNic(loginRequest.getNic());
+
+    if (userOptional.isPresent()) {
+        User user = userOptional.get();
+        
+        // Compare plain-text passwords directly
+        if (loginRequest.getPassword().equals(user.getPassword())) {
+            return ResponseEntity.ok(Collections.singletonMap("userId", user.getId()));
+        } else {
+            return ResponseEntity.status(401).body(Collections.singletonMap("message", "Incorrect password"));
+        }
+    } else {
+        return ResponseEntity.status(401).body(Collections.singletonMap("message", "Unauthorized"));
+    }
+}
+
+    
 
 }

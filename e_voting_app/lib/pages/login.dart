@@ -11,11 +11,13 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final TextEditingController _nicController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
+    _nicController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -23,22 +25,28 @@ class _LoginState extends State<Login> {
   Future<void> _login() async {
     if (_formKey.currentState?.validate() != true) return;
 
-    final url = Uri.parse('');
+    final url = Uri.parse('http://10.0.2.2:8080/api/login');  // Update with your API URL
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
-      body: json.encode({'password': _passwordController.text}),
+      body: json.encode({
+        'nic': _nicController.text, 
+        'password': _passwordController.text
+      }),
     );
 
     if (response.statusCode == 200) {
       // Login successful
+      final data = json.decode(response.body);
+      final int userId = data['userId'];  // Assuming response includes userId
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login successful!')),
       );
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const Fistpage(),
+          builder: (context) => Fistpage(),  // Pass userId to Fistpage
         ),
       );
     } else if (response.statusCode == 401) {
@@ -49,7 +57,7 @@ class _LoginState extends State<Login> {
     } else if (response.statusCode == 404) {
       // User not found
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('User not found. Please check the user ID.')),
+        SnackBar(content: Text('User not found. Please check the NIC.')),
       );
     } else {
       // Other errors
@@ -79,7 +87,37 @@ class _LoginState extends State<Login> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 120),
+              const SizedBox(height: 30),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: TextFormField(
+                  controller: _nicController,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter NIC',
+                    border: OutlineInputBorder(),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter NIC';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -95,14 +133,13 @@ class _LoginState extends State<Login> {
                 ),
                 child: TextFormField(
                   controller: _passwordController,
+                  obscureText: true,
                   decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
+                    hintText: 'Enter Password',
+                    border: OutlineInputBorder(),
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   ),
-                  obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter password';

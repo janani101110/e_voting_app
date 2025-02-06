@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
       body: Container(
         // Background image covering the entire page
         decoration: const BoxDecoration(
-          image: DecorationImage(
+          image: DecorationImage( 
             image: AssetImage('assets/bg.png'), // Background image
             fit: BoxFit.cover, // Ensures the image fills the whole screen
           ),
