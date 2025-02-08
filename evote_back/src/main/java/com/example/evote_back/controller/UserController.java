@@ -1,9 +1,11 @@
 package com.example.evote_back.controller;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +21,6 @@ import com.example.evote_back.Repository.UserRepository;
 import com.example.evote_back.model.LoginRequest;
 import com.example.evote_back.model.PasswordRequest;
 import com.example.evote_back.model.User;
-
-
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -69,23 +69,33 @@ public class UserController {
     }
 
     @PostMapping("/login")
-public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-    Optional<User> userOptional = userRepository.findByNic(loginRequest.getNic());
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        Optional<User> userOptional = userRepository.findByNic(loginRequest.getNic());
 
-    if (userOptional.isPresent()) {
-        User user = userOptional.get();
-        
-        // Compare plain-text passwords directly
-        if (loginRequest.getPassword().equals(user.getPassword())) {
-            return ResponseEntity.ok(Collections.singletonMap("userId", user.getId()));
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            // Compare plain-text passwords directly
+            if (loginRequest.getPassword().equals(user.getPassword())) {
+                return ResponseEntity.ok(Collections.singletonMap("userId", user.getId()));
+            } else {
+                return ResponseEntity.status(401).body(Collections.singletonMap("message", "Incorrect password"));
+            }
         } else {
-            return ResponseEntity.status(401).body(Collections.singletonMap("message", "Incorrect password"));
+            return ResponseEntity.status(401).body(Collections.singletonMap("message", "Unauthorized"));
         }
-    } else {
-        return ResponseEntity.status(401).body(Collections.singletonMap("message", "Unauthorized"));
     }
-}
 
-    
+    @GetMapping("/division")
+    public ResponseEntity<?> fetchUserDivision(@RequestParam String nic) {
+        Optional<User> user = userRepository.findByNic(nic);
+
+        if (user.isPresent()) {
+            return ResponseEntity.ok(Map.of("division", user.get().getDivision()));
+        } else {
+            return ResponseEntity.status(404)
+                    .body(Map.of("error", "User not found"));
+        }
+    }
 
 }

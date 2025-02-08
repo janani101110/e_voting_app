@@ -20,6 +20,7 @@ public class User {
 
     private String password;
     private String nic;
+    private String division;
 
     public Long getId() {
         return id;
@@ -51,5 +52,13 @@ public class User {
 
     public void setNic(String nic) {
         this.nic = nic;
+    }
+
+    public String getDivision(){
+        return division;
+    }
+
+    public void setDivision(String division){
+        this.division = division;
     }
 }

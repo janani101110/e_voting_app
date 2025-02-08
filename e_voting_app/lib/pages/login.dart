@@ -25,20 +25,19 @@ class _LoginState extends State<Login> {
   Future<void> _login() async {
     if (_formKey.currentState?.validate() != true) return;
 
-    final url = Uri.parse('http://10.0.2.2:8080/api/login');  // Update with your API URL
+    final url =
+        Uri.parse('http://10.0.2.2:8080/api/login'); // Update with your API URL
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
-      body: json.encode({
-        'nic': _nicController.text, 
-        'password': _passwordController.text
-      }),
+      body: json.encode(
+          {'nic': _nicController.text, 'password': _passwordController.text}),
     );
 
     if (response.statusCode == 200) {
       // Login successful
       final data = json.decode(response.body);
-      final int userId = data['userId'];  // Assuming response includes userId
+      final int userId = data['userId']; // Assuming response includes userId
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login successful!')),
@@ -46,7 +45,7 @@ class _LoginState extends State<Login> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Fistpage(),  // Pass userId to Fistpage
+          builder: (context) => Fistpage(userId: userId, nic: _nicController.text,),
         ),
       );
     } else if (response.statusCode == 401) {
