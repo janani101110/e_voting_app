@@ -73,17 +73,32 @@ class _RegisterFormState extends State<RegisterForm> {
         title: const Text('Register Form'),
       ),
       body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/bg.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         padding: const EdgeInsets.all(25.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 50),
+            const Text(
+                'Register',
+                style: TextStyle(
+                  color: Color.fromRGBO(111, 44, 145, 1),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 50),
             Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('NIC Number'),
+                  
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -100,6 +115,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     child: TextFormField(
                       controller: nicController,
                       decoration: const InputDecoration(
+                        hintText: 'Enter NIC',
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
                         ),
@@ -114,8 +130,8 @@ class _RegisterFormState extends State<RegisterForm> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  const Text('Full Name'),
+                  const SizedBox(height: 50),
+                  
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -132,6 +148,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     child: TextFormField(
                       controller: fullnameController,
                       decoration: const InputDecoration(
+                        hintText: 'Enter Full Name',
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
                         ),
@@ -146,7 +163,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 50),
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(

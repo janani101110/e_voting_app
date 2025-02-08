@@ -63,7 +63,13 @@ class _PasswordState extends State<Password> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('User ID: ${widget.userId}')),
-      body: Padding(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/bg.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         padding: const EdgeInsets.all(25.0),
         child: Form(
           key: _formKey,

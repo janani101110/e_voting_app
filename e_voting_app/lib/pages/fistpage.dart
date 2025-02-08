@@ -17,7 +17,9 @@ class _FistState extends State<Fistpage> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   
-  String? userDivision; // Stores the fetched division
+  String? userDivision;
+  
+   // Stores the fetched division
 
   @override
   void initState() {
@@ -175,7 +177,7 @@ Widget _buildContainer(String text) {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Candidate()),
+          MaterialPageRoute(builder: (context) => Candidate( userId: widget.userId,)),
         );
       },
       style: ElevatedButton.styleFrom(

@@ -70,9 +70,15 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
-      body: Padding(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/bg.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         padding: const EdgeInsets.all(25.0),
-        child: Form(
+        child: Form( 
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
