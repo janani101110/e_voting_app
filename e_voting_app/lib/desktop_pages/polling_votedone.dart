@@ -1,16 +1,15 @@
+import 'package:e_voting_app/desktop_pages/polling_candidate.dart';
+import 'package:e_voting_app/widgets/navbar.dart';
 import 'package:flutter/material.dart';
-import 'fistpage.dart'; // Import Fistpage
 
-class Votedone extends StatefulWidget {
-  final int userId;
-
-  const Votedone({super.key, required this.userId});
+class PollingVotedone extends StatefulWidget {
+  const PollingVotedone({super.key});
 
   @override
-  _VotedoneState createState() => _VotedoneState();
+  State<PollingVotedone> createState() => _PollingVotedoneState();
 }
 
-class _VotedoneState extends State<Votedone> with SingleTickerProviderStateMixin {
+class _PollingVotedoneState extends State<PollingVotedone> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
@@ -33,9 +32,8 @@ class _VotedoneState extends State<Votedone> with SingleTickerProviderStateMixin
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => Fistpage(
-            userId: widget.userId,
-            hasVoted: true,
+          builder: (context) => PollingCandidate(
+            
           ),
         ),
       );
@@ -51,7 +49,7 @@ class _VotedoneState extends State<Votedone> with SingleTickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('User ID: ${widget.userId}')),
+      appBar: const NavBar(),
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,11 +59,11 @@ class _VotedoneState extends State<Votedone> with SingleTickerProviderStateMixin
               'You Have Voted Successfully',
               style: TextStyle(
                 color: Color.fromRGBO(111, 44, 145, 1),
-                fontSize: 20,
+                fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 75),
+            const SizedBox(height: 100),
             AnimatedBuilder(
               animation: _controller,
               builder: (context, child) {

@@ -66,6 +66,8 @@ flutter:
     - assets/Done.json
     - assets/fp.jpeg
     - assets/finger.png
+    - assets/bimage.jpg
+    - assets/pol.png
  
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

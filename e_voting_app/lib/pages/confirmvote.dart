@@ -1,17 +1,17 @@
 import 'package:e_voting_app/pages/candidate.dart';
-import 'package:e_voting_app/pages/votedone.dart';
+import 'package:e_voting_app/pages/votedone.dart'; 
 import 'package:flutter/material.dart';
 
 class Confirmvote extends StatefulWidget {
   final int userId;
-  const Confirmvote({super.key, required this.userId});
+  final Map<String, String> candidate;
+  const Confirmvote({super.key, required this.userId, required this.candidate});
 
   @override
   State<Confirmvote> createState() => _ConfirmvoteState();
 }
 
 class _ConfirmvoteState extends State<Confirmvote> {
-  
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +23,8 @@ class _ConfirmvoteState extends State<Confirmvote> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          
-          children: [const SizedBox(height: 40),
+          children: [
+            const SizedBox(height: 40),
             Center(
               child: Text(
                 'Confirm Your Vote',
@@ -54,7 +54,7 @@ class _ConfirmvoteState extends State<Confirmvote> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Janantha Jayakantha', // Candidate Name
+                              widget.candidate['name']!, // Candidate Name (widget.candidate)
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -62,7 +62,7 @@ class _ConfirmvoteState extends State<Confirmvote> {
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              'Natinal Rabbit Congress', // Candidate Party
+                              widget.candidate['party']!, // Candidate Party (widget.candidate)
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey[600],
@@ -100,15 +100,16 @@ class _ConfirmvoteState extends State<Confirmvote> {
                           ],
                         ),
                         child: ElevatedButton(
-                          onPressed:() {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Votedone(
-                                  userId: widget.userId), // Pass userId
-                            ),
-                          );
-                        },
+                          onPressed: () { 
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Votedone(
+                                  userId: widget.userId, // Pass userId
+                                ),
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,
                             shadowColor: Colors.transparent,
@@ -118,8 +119,7 @@ class _ConfirmvoteState extends State<Confirmvote> {
                           child: const Text(
                             'Submit',
                             style: TextStyle(color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                            
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       )
@@ -164,10 +164,10 @@ class _ConfirmvoteState extends State<Confirmvote> {
                           ),
                         ),
                         child: const Text(
-                          'Cancle',
+                          'Cancel',
                           style: TextStyle(color: Color.fromRGBO(
                                     111, 44, 145, 1),
-                                    fontWeight: FontWeight.bold), // Black text
+                                    fontWeight: FontWeight.bold), // Purple text
                         ),
                       ),
                     )

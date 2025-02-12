@@ -1,5 +1,6 @@
 import 'package:e_voting_app/pages/login.dart';
 import 'package:e_voting_app/pages/register_form.dart';
+import 'package:e_voting_app/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 
 class Register1 extends StatelessWidget {
@@ -9,9 +10,7 @@ class Register1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Register"),
-      ),
+      appBar: const NavBar(),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(

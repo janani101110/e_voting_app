@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:e_voting_app/pages/candidate.dart';
+import 'candidate.dart';
 
 class Fistpage extends StatefulWidget {
   final int userId;
-  final String nic;
+  final String? nic; // Optional NIC (needed only at login)
+  final bool hasVoted;
 
-  const Fistpage({super.key, required this.userId,required this.nic});
+  const Fistpage({super.key, required this.userId, this.nic, this.hasVoted = false});
 
   @override
   State<Fistpage> createState() => _FistState();
@@ -16,16 +17,17 @@ class Fistpage extends StatefulWidget {
 class _FistState extends State<Fistpage> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  
   String? userDivision;
-  
-   // Stores the fetched division
 
   @override
   void initState() {
     super.initState();
     _initAnimation();
-    _fetchUserDivision(widget.nic); // Fetch division from DB
+    
+    // Only fetch division if user has not voted
+    if (!widget.hasVoted) {
+      _fetchUserDivision();
+    }
   }
 
   void _initAnimation() {
@@ -39,32 +41,22 @@ class _FistState extends State<Fistpage> with SingleTickerProviderStateMixin {
     );
   }
 
-  Future<void> _fetchUserDivision(String nic) async {
-  final url = Uri.parse('http://10.0.2.2:8080/api/division?nic=$nic');
-  try {
-    final response = await http.get(url);
-
-    print("Response Status: ${response.statusCode}");
-    print("Response Body: ${response.body}"); // Log the response body for debugging
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      if (data.containsKey('division')) {
+  Future<void> _fetchUserDivision() async {
+    final url = Uri.parse('http://10.0.2.2:8080/api/division?userId=${widget.userId}');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
         setState(() {
-          userDivision = data['division'];
+          userDivision = data['division'] ?? "Division not found";
         });
       } else {
-        setState(() => userDivision = "Division not found");
+        setState(() => userDivision = "User not found");
       }
-    } else {
-      setState(() => userDivision = "User not found");
+    } catch (error) {
+      setState(() => userDivision = "Unknown");
     }
-  } catch (error) {
-    print("Error fetching division: $error");
-    setState(() => userDivision = "Unknown");
   }
-}
-
 
   @override
   void dispose() {
@@ -76,7 +68,9 @@ class _FistState extends State<Fistpage> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User ID: ${widget.userId}'),
+        title: Text(
+           // Show NIC when logging in
+             'User ID: ${widget.userId}'), // Show only User ID when coming from Votedone
       ),
       body: Stack(
         children: [
@@ -107,10 +101,12 @@ class _FistState extends State<Fistpage> with SingleTickerProviderStateMixin {
               children: [
                 const SizedBox(height: 300),
                 _buildContainer('Presidential Election 2024'),
-                const SizedBox(height: 20),
-                _buildDivision(userDivision ?? "Loading..."), // Show division or loading
+                const SizedBox(height: 30),
+                widget.hasVoted
+                    ? _buildThankYouButton()
+                    : _buildDivision(userDivision ?? "Loading..."),
                 const SizedBox(height: 50),
-                _buildVoteButton(),
+                widget.hasVoted ? Container() : _buildVoteButton(),
               ],
             ),
           ),
@@ -119,7 +115,7 @@ class _FistState extends State<Fistpage> with SingleTickerProviderStateMixin {
     );
   }
 
-Widget _buildContainer(String text) {
+  Widget _buildContainer(String text) {
     return Container(
       width: double.infinity,
       constraints: const BoxConstraints(minHeight: 80),
@@ -141,58 +137,43 @@ Widget _buildContainer(String text) {
       ),
     );
   }
+
   Widget _buildDivision(String text) {
-    return Container(
-      width: double.infinity,
-      constraints: const BoxConstraints(minHeight: 40),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color.fromRGBO(111, 44, 145, 1), Color.fromRGBO(199, 1, 127, 1)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+    return _buildContainer(text);
+  }
+
+  Widget _buildVoteButton() {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _scaleAnimation.value,
+          child: child,
+        );
+      },
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Candidate(userId: widget.userId)),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.purple,
+          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Center(
-        child: Text(
-         userDivision ?? "Loading",
-          style: const TextStyle(color: Colors.white, fontSize: 18),
-          textAlign: TextAlign.center,
+        child: const Center(
+          child: Text(
+            'Cast Your Vote Here',
+            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildVoteButton() {
-  return AnimatedBuilder(
-    animation: _controller,
-    builder: (context, child) {
-      return Transform.scale(
-        scale: _scaleAnimation.value,
-        child: child,
-      );
-    },
-    child: ElevatedButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Candidate( userId: widget.userId,)),
-        );
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.purple, // Visible color
-        padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 10),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-      child: const Center(
-        child: Text(
-          'Cast Your Vote Here',
-          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-      ),
-    ),
-  );
-}
-
+  Widget _buildThankYouButton() {
+    return _buildContainer('Thank You for Voting');
+  }
 }

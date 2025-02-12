@@ -1,53 +1,88 @@
-import 'package:e_voting_app/pages/confirmvote.dart';
+import 'package:e_voting_app/desktop_pages/polling_confirm.dart';
+import 'package:e_voting_app/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 
-class Candidate extends StatefulWidget {
-  final int userId;
-
-  const Candidate({super.key, required this.userId});
+class PollingCandidate extends StatefulWidget {
+  const PollingCandidate({super.key});
 
   @override
-  State<Candidate> createState() => _CandidateState();
+  State<PollingCandidate> createState() => _PollingCandidateState();
 }
 
-class _CandidateState extends State<Candidate> {
-  // Candidates should be fetched dynamically from the admin panel in the future.
+class _PollingCandidateState extends State<PollingCandidate> { 
   final List<Map<String, String>> candidates = [
     {'name': 'Janantha Jayakantha', 'party': 'National Rabbit Congrass'},
     {'name': 'Chandrakumara', 'party': 'United Brilliant Party'},
     {'name': 'Anuhas Kapila', 'party': 'National SecondOver Party'},
     {'name': 'Cocomelon', 'party': 'Sri Lanka Coconut Party'},
     {'name': 'Candidate 5', 'party': 'Party E'},
-    {'name': 'Candidate 6', 'party': 'Party F'}, 
+    {'name': 'Candidate 6', 'party': 'Party F'},
   ];
 
   void _castVote(Map<String, String> candidate) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Confirmvote(
-          candidate: candidate,
-          userId: widget.userId, // Use widget.userId instead
+builder: (context) => PollingConfirm(candidate: candidate),
         ),
-      ),
-    );
+      );
+   
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('User ID: ${widget.userId}'),
-      ),
+      appBar: const NavBar(),
       body: Padding(
-        padding: const EdgeInsets.all(20.0), // Global padding for the whole body
+        padding:
+            const EdgeInsets.all(20.0), // Global padding for the whole body
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 30),
+            
+            Container(
+              width: double.infinity, // Full width of the screen
+              height: 150,
+              // padding: const EdgeInsets.symmetric(vertical: 10), // Adds height
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [
+                    Color.fromRGBO(111, 44, 145, 1),
+                    Color.fromRGBO(199, 1, 127, 1),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(10), // Rounded edges
+              ),
+              alignment: Alignment.centerLeft, // Center text inside
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start, // Center the row
+                children: [
+                  const SizedBox(width: 130), // Add spacing to the left
+                  const Text(
+                    'Presidential Election 2024',
+                    style: TextStyle(
+                      fontSize: 28, // Large font size
+                      fontWeight: FontWeight.bold, // Bold text
+                      color: Colors.white, // White color for contrast
+                      letterSpacing:
+                          1.5, // Slight spacing for better readability
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(width: 600),
+                  SizedBox(
+                    width: 200,
+                    height: 150,
+                    child: Image.asset('assets/pol.png', fit: BoxFit.fill),
+                  )
+                ],
+              ),
+            ),
+const SizedBox(height: 50),
             Center(
               child: Text(
-                'Select Your Candidate',
+                'Select Your Candidate For Presidential Election 2024',
                 style: TextStyle(
                   color: Color.fromRGBO(111, 44, 145, 1),
                   fontSize: 20,
@@ -55,15 +90,7 @@ class _CandidateState extends State<Candidate> {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
-            const Text(
-              'Presidential Election 2024',
-              style: TextStyle(
-                color: Color.fromRGBO(111, 44, 145, 1),
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+
             const SizedBox(height: 30),
 
             // List of candidate cards
@@ -74,10 +101,13 @@ class _CandidateState extends State<Candidate> {
                   children: List.generate(candidates.length, (index) {
                     final candidate = candidates[index];
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0), // Padding between each card
+                      padding: const EdgeInsets.only(
+                          bottom: 15.0), // Padding between each card
                       child: InkWell(
-                        onTap: () => _castVote(candidate), // Pass only the candidate
+                        onTap: () => _castVote(candidate),
+
                         child: Container(
+                          width: 600,
                           padding: const EdgeInsets.all(25.0),
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -100,7 +130,7 @@ class _CandidateState extends State<Candidate> {
                                 size: 50,
                                 color: Color.fromRGBO(111, 44, 145, 1),
                               ),
-                              const SizedBox(width: 20),
+                              const SizedBox(width: 200),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
