@@ -24,7 +24,7 @@ android {
     
     defaultConfig {
         applicationId = "com.example.e_voting_app"
-        minSdkVersion 21  // Explicitly set the minSdkVersion to 21 or higher
+        minSdkVersion 23  // Explicitly set the minSdkVersion to 21 or higher
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutter.versionCode
         versionName flutter.versionName

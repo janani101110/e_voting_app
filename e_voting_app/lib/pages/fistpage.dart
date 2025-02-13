@@ -28,6 +28,10 @@ class _FistState extends State<Fistpage> with SingleTickerProviderStateMixin {
     if (!widget.hasVoted) {
       _fetchUserDivision();
     }
+    // Ensure UI rebuilds properly
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    setState(() {});
+  });
   }
 
   void _initAnimation() {
