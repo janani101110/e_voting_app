@@ -1,6 +1,7 @@
 import 'package:e_voting_app/pages/candidate.dart';
 import 'package:e_voting_app/pages/votedone.dart'; 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Confirmvote extends StatefulWidget {
   final int userId;
@@ -27,7 +28,7 @@ class _ConfirmvoteState extends State<Confirmvote> {
             const SizedBox(height: 40),
             Center(
               child: Text(
-                'Confirm Your Vote',
+                'candi1'.tr,
                 style: TextStyle(
                   color: Color.fromRGBO(111, 44, 145, 1),
                   fontSize: 20,
@@ -44,7 +45,7 @@ class _ConfirmvoteState extends State<Confirmvote> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Icon(
+                        const Icon( 
                           Icons.account_circle,
                           size: 50,
                           color: Color.fromRGBO(111, 44, 145, 1),
@@ -116,8 +117,8 @@ class _ConfirmvoteState extends State<Confirmvote> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 40, vertical: 15),
                           ),
-                          child: const Text(
-                            'Submit',
+                          child:  Text(
+                            'submit'.tr,
                             style: TextStyle(color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -163,8 +164,8 @@ class _ConfirmvoteState extends State<Confirmvote> {
                                     111, 44, 145, 1)), // Purple border
                           ),
                         ),
-                        child: const Text(
-                          'Cancel',
+                        child:  Text(
+                          'cancel'.tr,
                           style: TextStyle(color: Color.fromRGBO(
                                     111, 44, 145, 1),
                                     fontWeight: FontWeight.bold), // Purple text

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'fistpage.dart'; // Import Fistpage
 
 class Votedone extends StatefulWidget {
@@ -17,7 +18,7 @@ class _VotedoneState extends State<Votedone> with SingleTickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-
+ 
     // Initialize animation
     _controller = AnimationController(
       vsync: this,
@@ -57,8 +58,8 @@ class _VotedoneState extends State<Votedone> with SingleTickerProviderStateMixin
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 60),
-            const Text(
-              'You Have Voted Successfully',
+             Text(
+              'vote3'.tr,
               style: TextStyle(
                 color: Color.fromRGBO(111, 44, 145, 1),
                 fontSize: 20,

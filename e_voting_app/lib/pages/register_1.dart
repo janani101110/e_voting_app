@@ -2,9 +2,10 @@ import 'package:e_voting_app/pages/login.dart';
 import 'package:e_voting_app/pages/register_form.dart';
 import 'package:e_voting_app/widgets/navbar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Register1 extends StatelessWidget {
-  
+   
   const Register1({super.key});
 
   @override
@@ -80,7 +81,7 @@ class Register1 extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: const Text('Register'),
+                        child:  Text('reg'.tr),
                       ),
                     ),
                   ),
@@ -124,7 +125,7 @@ class Register1 extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: const Text('Log In'),
+                        child:  Text('log'.tr),
                       ),
                     ),
                   ),

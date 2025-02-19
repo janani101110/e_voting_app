@@ -1,5 +1,6 @@
 import 'package:e_voting_app/pages/register_1.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -78,7 +79,10 @@ class HomePage extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       // Navigate to Register1
+                      var locale=Locale('si','LK');
+                        Get.updateLocale(locale);
                       Navigator.push(
+                        
                         context,
                         MaterialPageRoute(builder: (context) => const Register1()),
                       );
@@ -154,7 +158,13 @@ class HomePage extends StatelessWidget {
                     child: ElevatedButton(
                     
                       onPressed: () {
-                        // Add your onPressed code here!
+                        var locale=Locale('en','US');
+                        Get.updateLocale(locale);
+                        Navigator.push(
+                        
+                        context,
+                        MaterialPageRoute(builder: (context) => const Register1()),
+                      );
                       },
                       
                       style: ElevatedButton.styleFrom(

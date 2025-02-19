@@ -1,7 +1,10 @@
-import 'package:e_voting_app/pages/fistpage.dart';
+import 'package:e_voting_app/pages/BiometricAuth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -14,6 +17,9 @@ class _LoginState extends State<Login> {
   final TextEditingController _nicController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  
+
+
 
   @override
   void dispose() {
@@ -29,7 +35,7 @@ class _LoginState extends State<Login> {
         Uri.parse('http://10.0.2.2:8080/api/login'); // Update with your API URL
     final response = await http.post(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: {'Content-Type': 'application/json'}, 
       body: json.encode(
           {'nic': _nicController.text, 'password': _passwordController.text}),
     );
@@ -45,7 +51,7 @@ class _LoginState extends State<Login> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Fistpage(userId: userId, nic: _nicController.text,),
+          builder: (context) => Biometricauth(userId: userId, nic: _nicController.text,),
         ),
       );
     } else if (response.statusCode == 401) {
@@ -66,6 +72,10 @@ class _LoginState extends State<Login> {
     }
   }
 
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,8 +94,8 @@ class _LoginState extends State<Login> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 80),
-              const Text(
-                'Login',
+               Text( 
+                'log'.tr,
                 style: TextStyle(
                   color: Color.fromRGBO(111, 44, 145, 1),
                   fontSize: 20,
@@ -168,16 +178,20 @@ class _LoginState extends State<Login> {
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),
+                  
                   child: ElevatedButton(
-                    onPressed: _login,
+                    onPressed: 
+                      _login,
+                      
+                    
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 40, vertical: 15),
                     ),
-                    child: const Text(
-                      'Submit',
+                    child: Text(
+                      'submit'.tr,
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

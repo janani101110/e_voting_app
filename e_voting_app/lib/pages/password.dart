@@ -1,5 +1,6 @@
 import 'package:e_voting_app/pages/passaccept.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -77,8 +78,8 @@ class _PasswordState extends State<Password> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 80),
-              const Text(
-                'Password',
+               Text(
+                'password'.tr,
                 style: TextStyle(
                   color: Color.fromRGBO(111, 44, 145, 1),
                   fontSize: 20,
@@ -112,8 +113,8 @@ class _PasswordState extends State<Password> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 40, vertical: 15),
                     ),
-                    child: const Text(
-                      'Submit',
+                    child:Text(
+                      'submit'.tr,
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

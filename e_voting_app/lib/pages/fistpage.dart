@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'candidate.dart';
 
@@ -7,10 +8,10 @@ class Fistpage extends StatefulWidget {
   final int userId;
   final String? nic; // Optional NIC (needed only at login)
   final bool hasVoted;
-
+ 
   const Fistpage({super.key, required this.userId, this.nic, this.hasVoted = false});
 
-  @override
+  @override 
   State<Fistpage> createState() => _FistState();
 }
 
@@ -104,7 +105,7 @@ class _FistState extends State<Fistpage> with SingleTickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 300),
-                _buildContainer('Presidential Election 2024'),
+                _buildContainer('election'.tr),
                 const SizedBox(height: 30),
                 widget.hasVoted
                     ? _buildThankYouButton()
@@ -167,9 +168,9 @@ class _FistState extends State<Fistpage> with SingleTickerProviderStateMixin {
           padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 10),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
-        child: const Center(
+        child:  Center(
           child: Text(
-            'Cast Your Vote Here',
+            'vote1'.tr,
             style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
@@ -178,6 +179,6 @@ class _FistState extends State<Fistpage> with SingleTickerProviderStateMixin {
   }
 
   Widget _buildThankYouButton() {
-    return _buildContainer('Thank You for Voting');
+    return _buildContainer('vote2'.tr);
   }
 }

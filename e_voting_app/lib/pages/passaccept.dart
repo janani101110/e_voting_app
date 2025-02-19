@@ -2,6 +2,7 @@
 
 import 'package:e_voting_app/pages/login.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/export.dart';
 import 'package:lottie/lottie.dart';
 
 class Passaccept extends StatefulWidget {
@@ -33,8 +34,8 @@ class _PassacceptState extends State<Passaccept> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Password Accepted',
+             Text(
+              'user2'.tr,
               style: TextStyle(
                 color: Color.fromRGBO(111, 44, 145, 1),
                 fontSize: 20,

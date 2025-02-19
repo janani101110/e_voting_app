@@ -4,7 +4,7 @@ plugins {
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
     
-}
+} 
 
 android {
     namespace = "com.example.e_voting_app"
@@ -24,7 +24,7 @@ android {
     
     defaultConfig {
         applicationId = "com.example.e_voting_app"
-        minSdkVersion 23  // Explicitly set the minSdkVersion to 21 or higher
+        minSdkVersion 21  // Explicitly set the minSdkVersion to 21 or higher
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutter.versionCode
         versionName flutter.versionName

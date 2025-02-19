@@ -1,5 +1,6 @@
 import 'package:e_voting_app/pages/confirmvote.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Candidate extends StatefulWidget {
   final int userId;
@@ -16,7 +17,7 @@ class _CandidateState extends State<Candidate> {
     {'name': 'Janantha Jayakantha', 'party': 'National Rabbit Congrass'},
     {'name': 'Chandrakumara', 'party': 'United Brilliant Party'},
     {'name': 'Anuhas Kapila', 'party': 'National SecondOver Party'},
-    {'name': 'Cocomelon', 'party': 'Sri Lanka Coconut Party'},
+    {'name': 'Cocomelon', 'party': 'Sri Lanka Coconut Party'}, 
     {'name': 'Candidate 5', 'party': 'Party E'},
     {'name': 'Candidate 6', 'party': 'Party F'}, 
   ];
@@ -47,7 +48,7 @@ class _CandidateState extends State<Candidate> {
             const SizedBox(height: 30),
             Center(
               child: Text(
-                'Select Your Candidate',
+                'candi1'.tr,
                 style: TextStyle(
                   color: Color.fromRGBO(111, 44, 145, 1),
                   fontSize: 20,
@@ -56,8 +57,8 @@ class _CandidateState extends State<Candidate> {
               ),
             ),
             const SizedBox(height: 10),
-            const Text(
-              'Presidential Election 2024',
+            Text(
+              'election'.tr,
               style: TextStyle(
                 color: Color.fromRGBO(111, 44, 145, 1),
                 fontSize: 20,

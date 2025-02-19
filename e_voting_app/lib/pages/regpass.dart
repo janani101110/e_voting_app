@@ -1,5 +1,6 @@
 import 'package:e_voting_app/pages/password.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 class Regpass extends StatefulWidget {
@@ -9,7 +10,7 @@ final String nic;
 
   @override
   _RegpassState createState() => _RegpassState();
-}
+} 
 
 class _RegpassState extends State<Regpass> {
   @override
@@ -35,8 +36,8 @@ class _RegpassState extends State<Regpass> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'User is Validated',
+             Text(
+              'user1'.tr,
               style: TextStyle(
                 color: Color.fromRGBO(111, 44, 145, 1),
                 fontSize: 20,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:e_voting_app/pages/regpass.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterForm extends StatefulWidget {
@@ -74,7 +75,7 @@ class _RegisterFormState extends State<RegisterForm> {
       ),
       body: Container(
         decoration: const BoxDecoration(
-          image: DecorationImage(
+          image: DecorationImage( 
             image: AssetImage('assets/bg.png'),
             fit: BoxFit.cover,
           ),
@@ -84,8 +85,8 @@ class _RegisterFormState extends State<RegisterForm> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 50),
-            const Text(
-                'Register',
+             Text(
+                'reg'.tr,
                 style: TextStyle(
                   color: Color.fromRGBO(111, 44, 145, 1),
                   fontSize: 20,
@@ -190,8 +191,8 @@ class _RegisterFormState extends State<RegisterForm> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 40, vertical: 15),
                         ),
-                        child: const Text(
-                          'Submit',
+                        child:  Text(
+                          'submit'.tr,
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
