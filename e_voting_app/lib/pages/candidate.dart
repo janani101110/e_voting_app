@@ -12,26 +12,49 @@ class Candidate extends StatefulWidget {
 }
 
 class _CandidateState extends State<Candidate> {
-  // Candidates should be fetched dynamically from the admin panel in the future.
   final List<Map<String, String>> candidates = [
     {'name': 'Janantha Jayakantha', 'party': 'National Rabbit Congrass'},
     {'name': 'Chandrakumara', 'party': 'United Brilliant Party'},
     {'name': 'Anuhas Kapila', 'party': 'National SecondOver Party'},
-    {'name': 'Cocomelon', 'party': 'Sri Lanka Coconut Party'}, 
+    {'name': 'Cocomelon', 'party': 'Sri Lanka Coconut Party'},
     {'name': 'Candidate 5', 'party': 'Party E'},
-    {'name': 'Candidate 6', 'party': 'Party F'}, 
+    {'name': 'Candidate 6', 'party': 'Party F'},
   ];
 
-  void _castVote(Map<String, String> candidate) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Confirmvote(
-          candidate: candidate,
-          userId: widget.userId, // Use widget.userId instead
+  List<Map<String, String>> selectedCandidates = [];
+
+  void _toggleSelection(Map<String, String> candidate) {
+    setState(() {
+      if (selectedCandidates.contains(candidate)) {
+        selectedCandidates.remove(candidate);
+      } else {
+        if (selectedCandidates.length < 3) {
+          selectedCandidates.add(candidate);
+        } else {
+          // Show a message when more than 3 are selected
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('You can select only 3 candidates'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      }
+    });
+  }
+
+  void _confirmVote() {
+    if (selectedCandidates.length == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Confirmvote(
+            candidate: selectedCandidates, // Pass selected candidates
+            userId: widget.userId,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   @override
@@ -41,7 +64,7 @@ class _CandidateState extends State<Candidate> {
         title: Text('User ID: ${widget.userId}'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0), // Global padding for the whole body
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -67,21 +90,22 @@ class _CandidateState extends State<Candidate> {
             ),
             const SizedBox(height: 30),
 
-            // List of candidate cards
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(15.0),
                 child: Column(
                   children: List.generate(candidates.length, (index) {
                     final candidate = candidates[index];
+                    final isSelected = selectedCandidates.contains(candidate);
+
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0), // Padding between each card
+                      padding: const EdgeInsets.only(bottom: 15.0),
                       child: InkWell(
-                        onTap: () => _castVote(candidate), // Pass only the candidate
+                        onTap: () => _toggleSelection(candidate),
                         child: Container(
                           padding: const EdgeInsets.all(25.0),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: isSelected ? Colors.green[100] : Colors.white,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [
                               BoxShadow(
@@ -96,17 +120,34 @@ class _CandidateState extends State<Candidate> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Icon(
-                                Icons.account_circle,
-                                size: 50,
-                                color: Color.fromRGBO(111, 44, 145, 1),
+                              // Display the dynamic number based on `isSelected` state
+                              Text(
+                                isSelected
+                                    ? (selectedCandidates.indexOf(candidate) + 1)
+                                        .toString()
+                                    : '', // Display rank based on selection order
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  color: isSelected ? Colors.green : Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                              const SizedBox(width: 20),
+                              const SizedBox(width: 10), // Adjust space between number and icon
+
+                              // Icon to represent the selection state
+                              Icon(
+                                isSelected ? Icons.numbers_rounded : Icons.circle_outlined,
+                                size: 30,
+                                color: isSelected ? Colors.green : Colors.grey,
+                              ),
+                              const SizedBox(width: 20), // Space between icon and candidate name
+
+                              // Column displaying candidate's name and party
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    candidate['name']!, // Candidate Name
+                                    candidate['name']!,
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
@@ -114,7 +155,7 @@ class _CandidateState extends State<Candidate> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    ' ${candidate['party']}', // Candidate Party
+                                    candidate['party']!,
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.grey[600],
@@ -129,6 +170,21 @@ class _CandidateState extends State<Candidate> {
                     );
                   }),
                 ),
+              ),
+            ),
+
+            // Confirm Button
+            ElevatedButton(
+              onPressed: selectedCandidates.length == 3 ? _confirmVote : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: selectedCandidates.length == 3
+                    ? Color.fromRGBO(111, 44, 145, 1)
+                    : Colors.grey,
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+              ),
+              child: Text(
+                'Confirm Vote',
+                style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
           ],

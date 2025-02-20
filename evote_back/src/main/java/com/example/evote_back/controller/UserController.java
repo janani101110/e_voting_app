@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +29,8 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/user")
     public ResponseEntity<?> addUser(@RequestBody User user) {
@@ -59,7 +61,8 @@ public class UserController {
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setPassword(passwordRequest.getPassword()); // Update password
+            String encryptedPassword = passwordEncoder.encode(passwordRequest.getPassword()); // Encrypt password
+            user.setPassword(encryptedPassword); // Set encrypted password
             userRepository.save(user); // Save changes
 
             return ResponseEntity.ok("Password updated successfully");
@@ -71,12 +74,16 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         Optional<User> userOptional = userRepository.findByNic(loginRequest.getNic());
-
+    
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-
-            // Compare plain-text passwords directly
-            if (loginRequest.getPassword().equals(user.getPassword())) {
+            
+            // Log the plain-text and hashed password to verify the comparison
+            System.out.println("Plain-text password: " + loginRequest.getPassword());
+            System.out.println("Stored (hashed) password: " + user.getPassword());
+    
+            // Compare the plain-text password with the encrypted password
+            if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
                 return ResponseEntity.ok(Collections.singletonMap("userId", user.getId()));
             } else {
                 return ResponseEntity.status(401).body(Collections.singletonMap("message", "Incorrect password"));
@@ -85,7 +92,7 @@ public class UserController {
             return ResponseEntity.status(401).body(Collections.singletonMap("message", "Unauthorized"));
         }
     }
-
+    
     @GetMapping("/division")
     public ResponseEntity<?> fetchUserDivision(@RequestParam String nic) {
         Optional<User> user = userRepository.findByNic(nic);

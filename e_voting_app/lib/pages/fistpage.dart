@@ -24,11 +24,11 @@ class _FistState extends State<Fistpage> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _initAnimation();
-    
+    _fetchUserDivision();
     // Only fetch division if user has not voted
-    if (!widget.hasVoted) {
-      _fetchUserDivision();
-    }
+    // if (!widget.hasVoted) {
+      
+    // }
     // Ensure UI rebuilds properly
   WidgetsBinding.instance.addPostFrameCallback((_) {
     setState(() {});
@@ -47,7 +47,7 @@ class _FistState extends State<Fistpage> with SingleTickerProviderStateMixin {
   }
 
   Future<void> _fetchUserDivision() async {
-    final url = Uri.parse('http://10.0.2.2:8080/api/division?userId=${widget.userId}');
+final url = Uri.parse('http://10.0.2.2:8080/api/division?nic=${widget.nic}');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
