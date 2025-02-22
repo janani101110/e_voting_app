@@ -9,7 +9,7 @@ class PollingCandidate extends StatefulWidget {
   State<PollingCandidate> createState() => _PollingCandidateState();
 }
 
-class _PollingCandidateState extends State<PollingCandidate> { 
+class _PollingCandidateState extends State<PollingCandidate> {
   final List<Map<String, String>> candidates = [
     {'name': 'Janantha Jayakantha', 'party': 'National Rabbit Congrass'},
     {'name': 'Chandrakumara', 'party': 'United Brilliant Party'},
@@ -19,30 +19,50 @@ class _PollingCandidateState extends State<PollingCandidate> {
     {'name': 'Candidate 6', 'party': 'Party F'},
   ];
 
+  List<Map<String, String>> selectedCandidates = [];
+
   void _castVote(Map<String, String> candidate) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-builder: (context) => PollingConfirm(candidate: candidate),
+    setState(() {
+      if (selectedCandidates.contains(candidate)) {
+        selectedCandidates.remove(candidate);
+      } else {
+        if (selectedCandidates.length < 3) {
+          selectedCandidates.add(candidate);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('You can select up to 3 candidates'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      }
+    });
+  }
+
+  void _confirmVote() {
+    if (selectedCandidates.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PollingConfirm(candidate: selectedCandidates),
         ),
       );
-   
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const NavBar(),
       body: Padding(
-        padding:
-            const EdgeInsets.all(20.0), // Global padding for the whole body
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            
             Container(
-              width: double.infinity, // Full width of the screen
+              width: double.infinity,
               height: 150,
-              // padding: const EdgeInsets.symmetric(vertical: 10), // Adds height
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   colors: [
@@ -52,34 +72,32 @@ builder: (context) => PollingConfirm(candidate: candidate),
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius: BorderRadius.circular(10), // Rounded edges
+                borderRadius: BorderRadius.circular(10),
               ),
-              alignment: Alignment.centerLeft, // Center text inside
+              alignment: Alignment.centerLeft,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start, // Center the row
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(width: 130), // Add spacing to the left
+                  const SizedBox(width: 130),
                   const Text(
                     'Presidential Election 2024',
                     style: TextStyle(
-                      fontSize: 28, // Large font size
-                      fontWeight: FontWeight.bold, // Bold text
-                      color: Colors.white, // White color for contrast
-                      letterSpacing:
-                          1.5, // Slight spacing for better readability
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 1.5,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(width: 600),
                   SizedBox(
                     width: 200,
                     height: 150,
                     child: Image.asset('assets/pol.png', fit: BoxFit.fill),
-                  )
+                  ),
                 ],
               ),
             ),
-const SizedBox(height: 50),
+            const SizedBox(height: 50),
             Center(
               child: Text(
                 'Select Your Candidate For Presidential Election 2024',
@@ -90,27 +108,23 @@ const SizedBox(height: 50),
                 ),
               ),
             ),
-
             const SizedBox(height: 30),
-
-            // List of candidate cards
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(15.0),
                 child: Column(
                   children: List.generate(candidates.length, (index) {
                     final candidate = candidates[index];
+                    final isSelected = selectedCandidates.contains(candidate);
+
                     return Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 15.0), // Padding between each card
+                      padding: const EdgeInsets.only(bottom: 15.0),
                       child: InkWell(
                         onTap: () => _castVote(candidate),
-
                         child: Container(
-                          width: 600,
                           padding: const EdgeInsets.all(25.0),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: isSelected ? Colors.green[100] : Colors.white,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [
                               BoxShadow(
@@ -125,17 +139,31 @@ const SizedBox(height: 50),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Icon(
-                                Icons.account_circle,
-                                size: 50,
-                                color: Color.fromRGBO(111, 44, 145, 1),
+                              Text(
+                                isSelected
+                                    ? (selectedCandidates.indexOf(candidate) + 1)
+                                        .toString()
+                                    : '',
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  color: isSelected ? Colors.green : Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Icon(
+                                isSelected
+                                    ? Icons.check_circle
+                                    : Icons.circle_outlined,
+                                size: 30,
+                                color: isSelected ? Colors.green : Colors.grey,
                               ),
                               const SizedBox(width: 200),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    candidate['name']!, // Candidate Name
+                                    candidate['name']!,
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
@@ -143,7 +171,7 @@ const SizedBox(height: 50),
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    ' ${candidate['party']}', // Candidate Party
+                                    candidate['party']!,
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.grey[600],
@@ -158,6 +186,19 @@ const SizedBox(height: 50),
                     );
                   }),
                 ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: selectedCandidates.isNotEmpty ? _confirmVote : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: selectedCandidates.isNotEmpty
+                    ? Color.fromRGBO(111, 44, 145, 1)
+                    : Colors.grey,
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+              ),
+              child: Text(
+                'Confirm Vote',
+                style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
           ],

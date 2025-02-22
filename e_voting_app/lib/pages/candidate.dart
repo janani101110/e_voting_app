@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 
 class Candidate extends StatefulWidget {
   final int userId;
-
-  const Candidate({super.key, required this.userId});
+ 
+  const Candidate({super.key, required this.userId}); 
 
   @override
   State<Candidate> createState() => _CandidateState();
@@ -44,7 +44,7 @@ class _CandidateState extends State<Candidate> {
   }
 
   void _confirmVote() {
-    if (selectedCandidates.length == 3) {
+    if (selectedCandidates.isNotEmpty) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -175,9 +175,9 @@ class _CandidateState extends State<Candidate> {
 
             // Confirm Button
             ElevatedButton(
-              onPressed: selectedCandidates.length == 3 ? _confirmVote : null,
+              onPressed: selectedCandidates.isNotEmpty ? _confirmVote : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: selectedCandidates.length == 3
+                backgroundColor: selectedCandidates.isNotEmpty
                     ? Color.fromRGBO(111, 44, 145, 1)
                     : Colors.grey,
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
